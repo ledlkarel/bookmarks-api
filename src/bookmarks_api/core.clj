@@ -35,6 +35,7 @@
   (create-bookmark {:title "Clojure Docs"
                     :url "https://clojure.org"
                     :tags ["clojure"]})
-  (println "Bookmarks:" (get-bookmarks))
-  (update-bookmark 1 {:title "something new"})
-  (println "After update:" (get-bookmarks)))
+  ((requiring-resolve 'ring.adapter.jetty/run-jetty)
+   (requiring-resolve 'bookmarks-api.routes/app)
+   {:port 3000
+    :join? false}))
