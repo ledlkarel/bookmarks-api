@@ -2,18 +2,22 @@
   (:gen-class))
 
 (def bookmarks (atom {}))
+(def next-id (atom 0))
 
 (defn create-bookmark
   [bookmark]
-  (swap! bookmarks assoc 0 bookmark))
+  (let [id (swap! next-id inc)
+        bookmark (assoc bookmark :id id)]
+    (swap! bookmarks assoc id bookmark)
+    bookmark))
 
 (defn get-bookmarks
   []
-  (println @bookmarks))
+  @bookmarks)
 
 (defn get-bookmark
   [id]
-  (println (get @bookmarks id)))
+  (get @bookmarks id))
 
 (defn delete-bookmark
   [id]
@@ -21,15 +25,16 @@
 
 (defn update-bookmark
   [id bookmark]
-  (println bookmark)
-  (swap! bookmarks update id merge bookmark))
+  (let [updated (swap! bookmarks #(if (contains? % id)
+                                    (update % id merge bookmark)
+                                    %))]
+    (get updated id)))
 
 (defn -main
   []
-  (create-bookmark  {:id 1
-                     :title "Clojure Docs"
-                     :url "https://clojure.org"
-                     :tags ["clojure"]})
-  (get-bookmarks)
-  (update-bookmark 0 {:title "something new"})
-  (get-bookmarks))
+  (create-bookmark {:title "Clojure Docs"
+                    :url "https://clojure.org"
+                    :tags ["clojure"]})
+  (println "Bookmarks:" (get-bookmarks))
+  (update-bookmark 1 {:title "something new"})
+  (println "After update:" (get-bookmarks)))
