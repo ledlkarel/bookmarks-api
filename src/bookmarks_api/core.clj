@@ -17,6 +17,7 @@
 
 (defn get-bookmark
   [id]
+  (println id)
   (get @bookmarks id))
 
 (defn delete-bookmark

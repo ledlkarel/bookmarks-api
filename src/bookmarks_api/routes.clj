@@ -1,13 +1,17 @@
 (ns bookmarks-api.routes
   (:require [bookmarks-api.handlers :as handlers]
-            [ring.middleware.json :as json]
+            [ring.middleware.json :refer [wrap-json-response
+                                          wrap-json-body]]
             [reitit.ring :as ring]))
 
 (def router
   (ring/router
-   [["/bookmarks"
-     {:get handlers/list-bookmarks}]]))
+   [["/api/bookmarks"
+     {:get handlers/list-bookmarks
+      :post handlers/create-bookmark}]]))
 
 (def app
-  (-> (ring/ring-handler router)
-      (json/wrap-json-response)))
+  (-> router
+      ring/ring-handler
+      wrap-json-response
+      wrap-json-body))
