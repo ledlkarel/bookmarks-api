@@ -19,3 +19,11 @@
     (bookmarks/create-bookmark bookmark)
     {:status 201
      :body bookmark}))
+
+(defn delete-bookmark [request]
+  (let [id (parse-long (get-in request [:path-params :id]))
+        bookmark (bookmarks/delete-bookmark id)]
+    (if bookmark
+      {:status 204}
+      {:status 404
+       :body {:error "Bookmark not found"}})))

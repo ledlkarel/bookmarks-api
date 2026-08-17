@@ -16,12 +16,14 @@
   @bookmarks)
 
 (defn get-bookmark
-  [id] 
+  [id]
   (get @bookmarks id))
 
 (defn delete-bookmark
   [id]
-  (swap! bookmarks dissoc id))
+  (let [bookmark (get @bookmarks id)]
+    (swap! bookmarks dissoc id)
+    bookmark))
 
 (defn update-bookmark
   [id bookmark]

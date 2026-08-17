@@ -10,7 +10,8 @@
      {:get handlers/list-bookmarks
       :post handlers/create-bookmark}]
     ["/api/bookmark/:id"
-     {:get handlers/get-bookmark}]]))
+     {:get handlers/get-bookmark
+      :delete handlers/delete-bookmark}]]))
 
 (def app
   (-> router
