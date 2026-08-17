@@ -8,7 +8,9 @@
   (ring/router
    [["/api/bookmarks"
      {:get handlers/list-bookmarks
-      :post handlers/create-bookmark}]]))
+      :post handlers/create-bookmark}]
+    ["/api/bookmark/:id"
+     {:get handlers/get-bookmark}]]))
 
 (def app
   (-> router

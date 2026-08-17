@@ -5,9 +5,14 @@
   {:status 200
    :body (bookmarks/get-bookmarks)})
 
-(defn get-bookmark [_request]
-  {:status 200
-   :body (bookmarks/get-bookmark _request)})
+(defn get-bookmark [request]
+  (let [id (parse-long (get-in request [:path-params :id]))
+        bookmark (bookmarks/get-bookmark id)]
+    (if bookmark
+      {:status 200
+       :body bookmark}
+      {:status 404
+       :body {:error "Bookmark not found"}})))
 
 (defn create-bookmark [request]
   (let [bookmark (:body request)]
