@@ -33,6 +33,11 @@
         (swap! bookmarks assoc id updated)
         updated))))
 
+(defn find-bookmarks-by-tag [tag]
+  (filter
+   #(some #{tag} (:tags %))
+   (vals @bookmarks)))
+
 (defn -main
   []
   (create-bookmark {:title "Clojure Docs"

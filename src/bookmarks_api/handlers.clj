@@ -37,3 +37,10 @@
        :body bookmark}
       {:status 404
        :body {:error "Bookmark not found"}})))
+
+(defn list-bookmarks [request]
+  (let [tag (get-in request (:query-params "tag"))]
+    {:status 200
+     :body (if tag
+             (bookmarks/find-bookmarks-by-tag tag)
+             (bookmarks/get-bookmarks))}))
