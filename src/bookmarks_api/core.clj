@@ -26,11 +26,12 @@
     bookmark))
 
 (defn update-bookmark
-  [id bookmark]
-  (let [updated (swap! bookmarks #(if (contains? % id)
-                                    (update % id merge bookmark)
-                                    %))]
-    (get updated id)))
+  [id changes]
+  (let [existing (get @bookmarks id)]
+    (when existing
+      (let [updated (merge existing changes)]
+        (swap! bookmarks assoc id updated)
+        updated))))
 
 (defn -main
   []

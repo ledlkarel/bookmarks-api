@@ -27,3 +27,13 @@
       {:status 204}
       {:status 404
        :body {:error "Bookmark not found"}})))
+
+(defn update_bookmark [request]
+  (let [id (parse-long (get-in request [:path-params :id]))
+        changes (:body request)
+        bookmark (bookmarks/update-bookmark id changes)]
+    (if bookmark
+      {:status 200
+       :body bookmark}
+      {:status 404
+       :body {:error "Bookmark not found"}})))
